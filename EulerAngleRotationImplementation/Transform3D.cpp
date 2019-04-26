@@ -403,79 +403,22 @@ void temp(POINT3D & cartesianPt, ROTATE_TYPE rotType, double angle)
 		myfile << x1 << "," << x2 << "," << y1<<","<<y2 << "," << z1 << "," << z2<<"\n";
 	}
 }
-void rotate3D(POINT3D & cartesianPt, ROTATE_TYPE rotType, 
-              double angle)
+void rotate3D(POINT3D & cartesianPt, ROTATE_TYPE rotType, double angle)
 {
 	double d=-(3.14159265359*angle)/180;
-	
-	temp(cartesianPt, rotType, angle);
-	return;
-	
-	double x1,x2,y1,y2,z1,z2;
-	if(false)
-	{
-	  	myfile.open ("data_Z_Sphere.csv", ios::out | ios::app);
-		for(int i=1;i<=720 and flag;i++)
-		{
-			switch(rotType)
-			{
-				case ROTATE_X:
-			  		cartesianPt.y = y1 = 
-			    		(cartesianPt.y * cos(d) - cartesianPt.z * sin(d) + 0.5);
-			  		cartesianPt.z = z1 =
-			    		(cartesianPt.y * sin(d) + cartesianPt.z * cos(d) + 0.5);
-			    	y2=(cartesianPt.y - cartesianPt.z * d + 0.5);
-			    	z2=(cartesianPt.y * d + cartesianPt.z + 0.5);
-			  	break;
-				case ROTATE_Y:
-					cartesianPt.z = z1 = 
-						(cartesianPt.z * cos(d) - cartesianPt.x * sin(d) + 0.5);
-					cartesianPt.x = x1 =
-						(cartesianPt.z * sin(d) + cartesianPt.x * cos(d) + 0.5);
-					z2=(cartesianPt.z - cartesianPt.x * d + 0.5);
-					x2=(cartesianPt.z * d - cartesianPt.x  + 0.5);
-			  	break;
-				case ROTATE_Z:
-			  		cartesianPt.x = x1 =
-			    		(cartesianPt.x * cos(d) - cartesianPt.y * sin(d) + 0.5);
-			  		cartesianPt.y = y1 = 
-			    		(cartesianPt.x * sin(d) + cartesianPt.y * cos(d) + 0.5);
-			    	x2=(cartesianPt.x - cartesianPt.y * d + 0.5);
-			    	y2=(cartesianPt.x * d + cartesianPt.y + 0.5);
-			  	break;
-			}
-			arr[i-1][0]=x1;
-			arr[i-1][1]=x2;
-			arr[i-1][2]=y1;
-			arr[i-1][3]=y2;
-			arr[i-1][4]=z1;
-			arr[i-1][5]=z2;
-			myfile << arr[i-1][0] << "," << arr[i-1][1] << "," << arr[i-1][2]<<","<<arr[i-1][3] << "," << arr[i-1][4] << "," << arr[i-1][5]<<"\n";
-		}
-		myfile.close();
-		flag=false;
-	}
-	else if(true)
-	{
-		switch(rotType)
+	switch(rotType)
 		{
 			case ROTATE_X:
-		  		cartesianPt.y = y1 =
-		    		(cartesianPt.y * cos(d) - cartesianPt.z * sin(d) + 0.5);
-		  		cartesianPt.z = z1 =
-		    		(cartesianPt.y * sin(d) + cartesianPt.z * cos(d) + 0.5);
+		  		cartesianPt.y = (cartesianPt.y * cos(d) - cartesianPt.z * sin(d) + 0.5);
+		  		cartesianPt.z = (cartesianPt.y * sin(d) + cartesianPt.z * cos(d) + 0.5);
 		  	break;
 			case ROTATE_Y:
-				cartesianPt.z = z1 = 
-					(cartesianPt.z * cos(d) - cartesianPt.x * sin(d) + 0.5);
-				cartesianPt.x = x1 =
-					(cartesianPt.z * sin(d) + cartesianPt.x * cos(d) + 0.5);
+				cartesianPt.z = (cartesianPt.z * cos(d) - cartesianPt.x * sin(d) + 0.5);
+				cartesianPt.x = (cartesianPt.z * sin(d) + cartesianPt.x * cos(d) + 0.5);
 		  	break;
 			case ROTATE_Z:
-		  		cartesianPt.x = x1 =
-		    		(cartesianPt.x * cos(d) - cartesianPt.y * sin(d) + 0.5);
-		  		cartesianPt.y = y1 =
-		    		(cartesianPt.x * sin(d) + cartesianPt.y * cos(d) + 0.5);
+		  		cartesianPt.x = (cartesianPt.x * cos(d) - cartesianPt.y * sin(d) + 0.5);
+		  		cartesianPt.y = (cartesianPt.x * sin(d) + cartesianPt.y * cos(d) + 0.5);
 		  	break;
 		}
 	}

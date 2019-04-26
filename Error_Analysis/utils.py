@@ -2,6 +2,8 @@ from delaunay import computeVolume
 from random import randint
 from transform import *
 import symbols as sym
+import config
+import time
 
 class Point3D():
 	"""generic point"""
@@ -36,10 +38,17 @@ class PointCloud():
 		v = computeVolume(self.point_array)
 		return v
 	
+	def restore(self):
+		self.point_array = (self.orig_array).copy()
+
+
 	def recompute(self, transformations, idx):
 		self.point_array = (self.orig_array).copy()
+		total_angle = 0
 		for i in range(idx+1):
+			total_angle += transformations[i][1][1]
 			self.transform((sym.ROTATE_EULER_MODE, transformations[i][1]))
+		# self.transform((sym.ROTATE_EULER_MODE, (transformations[0][1][0], total_angle)))
 
 	def transform(self,transform_op, normalize=False):
 		pts = self.point_array

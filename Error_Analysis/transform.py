@@ -1,8 +1,10 @@
 import symbols as sym
 import math 
 from quat import Quaternion
-
+import time
+import config
 threshold = sym.THRESHOLD
+import rotation_euler
 
 
 def transform(pt, mode, mode_info, normalize=False):
@@ -41,26 +43,29 @@ def translate3D(cartesianPt, delx , dely, delz):
 def rotate3DEuler(cartesianPt, rotType, angle):
 	d = -1*(3.14159265359*angle)/180;
 	t = None
+	cos = math.cos(d)
+	sin = math.sin(d)
 	# print(cartesianPt)
 
 	if(rotType == sym.ROTATE_X):
-		t1  = (cartesianPt.y * math.cos(d) - cartesianPt.z * math.sin(d));
-		t2  = (cartesianPt.y * math.sin(d) + cartesianPt.z * math.cos(d));
 
-		# print(t1)
-		# print(t2)
+		t1  = (cartesianPt.y * cos - cartesianPt.z * sin);
+		t2  = (cartesianPt.y * sin + cartesianPt.z * cos);
+		# config.value += time.time() - a
+		t100 = rotation_euler.time_taken1(int(cartesianPt.y),int(cartesianPt.z), 0, angle)
+		config.value += t100
 
 		t = (cartesianPt.x, t1, t2)
 
 	elif(rotType == sym.ROTATE_Y):
-		t1 = (cartesianPt.z * math.cos(d) - cartesianPt.x * math.sin(d));
-		t2 = (cartesianPt.z * math.sin(d) + cartesianPt.x * math.cos(d));
+		t1 = (cartesianPt.z * cos - cartesianPt.x * sin);
+		t2 = (cartesianPt.z * sin + cartesianPt.x * cos);
 		cartesianPt.z = t1
 		cartesianPt.x = t2
 		t = (t2, cartesianPt.y, t1)
 	elif(rotType == sym.ROTATE_Z):
-		t1= (cartesianPt.x * math.cos(d) - cartesianPt.y * math.sin(d));
-		t2 = (cartesianPt.x * math.sin(d) + cartesianPt.y * math.cos(d));
+		t1= (cartesianPt.x * cos - cartesianPt.y * sin);
+		t2 = (cartesianPt.x * sin + cartesianPt.y * cos);
 		cartesianPt.x = t1
 		cartesianPt.y = t2
 		t = (t1, t2, cartesianPt.z)
@@ -106,26 +111,31 @@ def rotate3DEulerApprox(cartesianPt, rotType, angle, normalize=False):
 
 	t = None
 	if(rotType == sym.ROTATE_X):
-		t1  = (cartesianPt.y * 1 - cartesianPt.z * d);
-		t2  = (cartesianPt.y * d + cartesianPt.z * 1);
+		# a = time.time()
+		t1  = (cartesianPt.y  - cartesianPt.z * d);
+		t2  = (cartesianPt.y * d + cartesianPt.z);
+		# config.value += time.time() - a
+		t100 = rotation_euler.time_taken2(int(cartesianPt.y),int(cartesianPt.z), 0, angle)
+		# print("Approx : ", t100 )
+		config.value += t100
 		cartesianPt.y = t1
 		cartesianPt.z = t2
-		t = (cartesianPt.x, t1/r, t2/r)
+		t = (cartesianPt.x, t1, t2)
 
 	elif(rotType == sym.ROTATE_Y):
-		t1 = (cartesianPt.z * 1 - cartesianPt.x * d);
-		t2 = (cartesianPt.z * d + cartesianPt.x * 1);
+		t1 = (cartesianPt.z  - cartesianPt.x * d);
+		t2 = (cartesianPt.z * d + cartesianPt.x );
 		cartesianPt.z = t1
 		cartesianPt.x = t2
-		t = (t2/r, cartesianPt.y, t1/r)
+		t = (t2, cartesianPt.y, t1)
 
 
 	elif(rotType == sym.ROTATE_Z):
-		t1= (cartesianPt.x * 1 - cartesianPt.y * d);
-		t2 = (cartesianPt.x * d + cartesianPt.y * 1);
+		t1= (cartesianPt.x  - cartesianPt.y * d);
+		t2 = (cartesianPt.x * d + cartesianPt.y );
 		cartesianPt.x = t1
 		cartesianPt.y = t2
-		t = (t1/r, t2/r, cartesianPt.z)
+		t = (t1, t2, cartesianPt.z)
 
 	else:
 	 	print("Invalid rotate mode")
